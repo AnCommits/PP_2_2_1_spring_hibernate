@@ -59,9 +59,34 @@ public class MainApp {
         System.out.println(user);
 
 // Получение владельца несуществующей машины
-        User user6 = userService.getUserByModelAndSeries(":-)", 987654321);
+//        User user6 = userService.getUserByModelAndSeries(":-)", 987654321);
+//        System.out.println();
+//        System.out.println(user6);
+
+// Получение юзера по id
+        User user8 = userService.getUser(users.get(users.size() - 1).getId());
         System.out.println();
-        System.out.println(user6);
+        System.out.println(user8);
+
+// update
+        long id8 = user8.getId();
+        String email8 = user.getEmail();
+        user8.setEmail(email8.replaceFirst("gmail", "yahoo"));
+        userService.update(user8);
+
+        User user9 = userService.getUser(id8);
+        System.out.println();
+        System.out.println(user9);
+
+//  remove
+        System.out.println(userService.remove(id8));
+//  remove again
+//        System.out.println(userService.remove(id8));
+//  remove again
+//        userService.remove(user8);
+
+//        User user10 = userService.getUser(987654321);
+//        System.out.println(user10);
 
         context.close();
     }

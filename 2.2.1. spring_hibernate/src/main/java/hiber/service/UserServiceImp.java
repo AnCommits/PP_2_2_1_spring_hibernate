@@ -31,4 +31,28 @@ public class UserServiceImp implements UserService {
    public User getUserByModelAndSeries(String model, int series) {
       return userDao.getUserByModelAndSeries(model, series);
    }
+
+   @Transactional(readOnly = true)
+   @Override
+   public User getUser(long id) {
+      return userDao.getUser(id);
+   }
+
+   @Transactional
+   @Override
+   public void remove(User user) {
+      userDao.remove(user);
+   }
+
+   @Transactional
+   @Override
+   public void update(User user) {
+      userDao.update(user);
+   }
+
+   @Transactional
+   @Override
+   public boolean remove(long id) {
+      return userDao.remove(id);
+   }
 }

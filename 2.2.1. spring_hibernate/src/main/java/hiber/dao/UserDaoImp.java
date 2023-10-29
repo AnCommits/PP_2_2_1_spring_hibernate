@@ -45,4 +45,47 @@ public class UserDaoImp implements UserDao {
         }
         return user;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public User getUser(long id) {
+        User user = null;
+        try {
+            String HQL = "from User where id = :id";
+            TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(HQL);
+            query.setParameter("id", id);
+            user = query.getSingleResult();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public void remove(User user) {
+        try {
+            User user2 = getUser(user.getId());
+            // никакие исключения почему-то не перехватываются при отсутствии юзера в БД,
+            // в getUser исключение перехватывается при отсутствии id в БД
+            sessionFactory.getCurrentSession().remove(user2);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        sessionFactory.getCurrentSession().update(user);
+    }
+
+    @Override
+    public boolean remove(long id) {
+        try {
+            sessionFactory.getCurrentSession().remove(getUser(id));
+            return true;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
