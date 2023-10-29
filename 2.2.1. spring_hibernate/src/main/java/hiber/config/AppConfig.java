@@ -47,9 +47,6 @@ public class AppConfig {
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
         factoryBean.setHibernateProperties(props);
-//        factoryBean.setAnnotatedClasses(User.class);
-//        Class<?>[] annotatedClasses = {User.class, Car.class};
-//        factoryBean.setAnnotatedClasses(annotatedClasses);
         factoryBean.setAnnotatedClasses(User.class, Car.class);
         return factoryBean;
     }
@@ -81,15 +78,18 @@ public class AppConfig {
         return new User("Мария", "Кюри", "curie@gmail.com");
     }
 
+    @Bean("userX")
+    public User getUserX() {
+        return new User("Илон", "Маск", "musk@gmail.com");
+    }
+
     @Bean("randomCar")
     @Scope("prototype")
     public Car getRandomCar() {
-        Map<CarModel, Integer> map = Car.getSerialNumbers();
+        Map<String, Integer> serialNumbers = Car.getSerialNumbers();
         CarModel[] carModels = CarModel.values();
-        int n = random.nextInt(carModels.length);
-        CarModel carModel = carModels[n];
-        int sn = (n + 1) * 1_000_000;
-        map.merge(carModel, sn, (ov, nv) -> ov + 1);
-        return new Car(carModel.getModel(), map.get(carModel));
+        String carModel = carModels[random.nextInt(carModels.length)].getModel();
+        serialNumbers.merge(carModel, 1_000_000, (ov, nv) -> ov + 1);
+        return new Car(carModel, serialNumbers.get(carModel));
     }
 }

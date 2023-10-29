@@ -11,7 +11,7 @@ import java.util.Map;
 public class Car {
 
     @Transient
-    private static Map<CarModel, Integer> serialNumbers = new HashMap<>();
+    private static final Map<String, Integer> serialNumbers = new HashMap<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,9 @@ public class Car {
     private int series;
 
     @OneToOne(mappedBy = "car")
-    private User user;
+    private User owner;
 
-    public Car() {
-
-    }
+    public Car() {}
 
     public Car(String model, int series) {
         this.model = model;
@@ -51,14 +49,14 @@ public class Car {
     }
 
     public User getUser() {
-        return user;
+        return owner;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        owner = user;
     }
 
-    public static Map<CarModel, Integer> getSerialNumbers() {
+    public static Map<String, Integer> getSerialNumbers() {
         return serialNumbers;
     }
 }
