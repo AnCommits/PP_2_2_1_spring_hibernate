@@ -3,10 +3,15 @@ package hiber.model;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "cars")
 public class Car {
+
+    @Transient
+    private static Map<CarModel, Integer> serialNumbers = new HashMap<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,5 +56,9 @@ public class Car {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public static Map<CarModel, Integer> getSerialNumbers() {
+        return serialNumbers;
     }
 }

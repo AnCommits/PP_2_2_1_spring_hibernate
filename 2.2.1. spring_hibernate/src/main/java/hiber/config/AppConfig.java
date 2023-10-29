@@ -1,6 +1,7 @@
 package hiber.config;
 
 import hiber.model.Car;
+import hiber.model.CarModel;
 import hiber.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -79,23 +81,15 @@ public class AppConfig {
         return new User("Мария", "Кюри", "curie@gmail.com");
     }
 
-    @Bean("carP4_0001")
-    public Car getCar1() {
-        return new Car("Panhard 4 hp", 1890_0001);
-    }
-
-    @Bean("carP4_0002")
-    public Car getCar2() {
-        return new Car("Panhard 4 hp", 1890_0002);
-    }
-
-    @Bean("carP7_0001")
-    public Car getCar3() {
-        return new Car("Panhard 7 hp", 1902_0001);
-    }
-
-    @Bean("carP7_0002")
-    public Car getCar4() {
-        return new Car("Panhard 7 hp", 1902_0002);
+    @Bean("randomCar")
+    @Scope("prototype")
+    public Car getRandomCar() {
+        Map<CarModel, Integer> map = Car.getSerialNumbers();
+        CarModel[] carModels = CarModel.values();
+        int n = random.nextInt(carModels.length);
+        CarModel carModel = carModels[n];
+        int sn = (n + 1) * 1_000_000;
+        map.merge(carModel, sn, (ov, nv) -> ov + 1);
+        return new Car(carModel.getModel(), map.get(carModel));
     }
 }

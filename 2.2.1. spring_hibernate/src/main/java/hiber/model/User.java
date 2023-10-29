@@ -16,7 +16,7 @@ public class User {
    @Column(name = "last_name")
    private String lastName;
 
-//   @Column(name = "email", unique = true)
+   //   @Column(name = "email", unique = true)
    @Column(name = "email")
    private String email;
 
@@ -24,7 +24,7 @@ public class User {
    private Car car;
 
    public User() {}
-   
+
    public User(String firstName, String lastName, String email) {
       this.firstName = firstName;
       this.lastName = lastName;
