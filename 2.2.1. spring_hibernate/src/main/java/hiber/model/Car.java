@@ -28,7 +28,12 @@ public class Car {
     public Car() {
     }
 
-    public Car(String model, int series) {
+    public Car(@NonNull String model) {
+        this.model = model;
+        series = getNextSeries(model);
+    }
+
+    public Car(@NonNull String model, int series) {
         this.model = model;
         this.series = series;
     }
@@ -37,7 +42,7 @@ public class Car {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(@NonNull String model) {
         this.model = model;
     }
 

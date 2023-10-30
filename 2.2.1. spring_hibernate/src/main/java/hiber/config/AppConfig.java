@@ -87,7 +87,6 @@ public class AppConfig {
     @Scope("prototype")
     public Car getRandomCar() {
         CarModel[] carModels = CarModel.values();
-        String carModel = carModels[random.nextInt(carModels.length)].getModel();
-        return new Car(carModel, Car.getNextSeries(carModel));
+        return new Car(carModels[random.nextInt(carModels.length)].getModel());
     }
 }
