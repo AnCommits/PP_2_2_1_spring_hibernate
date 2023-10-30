@@ -10,9 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainApp {
+    private static final AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+
+    public static AnnotationConfigApplicationContext getContext() {
+        return context;
+    }
+
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
 
         UserService userService = context.getBean(UserService.class);
 
@@ -51,17 +56,17 @@ public class MainApp {
             System.out.println(user);
         }
 
-//  Получение юзера по модели и серии машины
+//  Получение юзера из БД по модели и серии машины
         User user = userService.getUserByModelAndSeries(carX.getModel(), carX.getSeries());
         System.out.println("Получение юзера по модели и серии машины:");
         System.out.println(user);
 
-//  Получение владельца несуществующей машины
+//  Получение из БД владельца несуществующей машины
 //        User user6 = userService.getUserByModelAndSeries(":-)", 987654321);
 //        System.out.println();
 //        System.out.println(user6);
 
-//  Получение юзера по id
+//  Получение из БД юзера по id
         long lastId = users.get(users.size() - 1).getId();
         User user8 = userService.getUser(lastId);
         System.out.println("Получение юзера по id:");
@@ -71,7 +76,7 @@ public class MainApp {
         user8.setEmail(user8.getEmail().replaceFirst("gmail", "yahoo"));
         userService.update(user8);
 
-//  Получение модифицированного юзера из БД
+//  Получение из БД модифицированного юзера
         User user9 = userService.getUser(lastId);
         System.out.println("Получение модифицированного юзера из БД:");
         System.out.println(user9);

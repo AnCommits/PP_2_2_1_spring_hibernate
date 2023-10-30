@@ -1,6 +1,6 @@
 package hiber.model;
 
-public enum CarModel {
+public enum CarModels {
     ALFA_24HP("ALFA 24hp"),
     AUDI_TYPE_A("Audi Type A"),
     BENZ_VICTORIA("Benz Victoria"),
@@ -8,7 +8,7 @@ public enum CarModel {
 
     private final String model;
 
-    CarModel(String model) {
+    CarModels(String model) {
         this.model = model;
     }
 

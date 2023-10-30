@@ -63,9 +63,9 @@ public class UserDaoImp implements UserDao {
     @Override
     public void remove(User user) {
         try {
-            User user2 = getUser(user.getId());
             // никакие исключения почему-то не перехватываются при отсутствии юзера в БД,
             // в getUser исключение перехватывается при отсутствии id в БД
+            User user2 = getUser(user.getId());
             sessionFactory.getCurrentSession().remove(user2);
         } catch (RuntimeException e) {
             e.printStackTrace();

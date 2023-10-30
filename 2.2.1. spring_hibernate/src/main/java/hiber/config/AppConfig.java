@@ -1,7 +1,7 @@
 package hiber.config;
 
 import hiber.model.Car;
-import hiber.model.CarModel;
+import hiber.model.CarModels;
 import hiber.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -85,7 +85,7 @@ public class AppConfig {
     @Bean("randomCar")
     @Scope("prototype")
     public Car getRandomCar() {
-        CarModel[] carModels = CarModel.values();
+        CarModels[] carModels = CarModels.values();
         return new Car(carModels[random.nextInt(carModels.length)].getModel());
     }
 }

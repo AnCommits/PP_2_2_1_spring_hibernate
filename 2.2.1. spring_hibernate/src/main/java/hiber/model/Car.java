@@ -1,17 +1,15 @@
 package hiber.model;
 
+import hiber.MainApp;
+import hiber.service.CarService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @Table(name = "cars")
 public class Car {
-
-    @Transient
-    private static final Map<String, Integer> serialNumbers = new HashMap<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +61,8 @@ public class Car {
     }
 
     public static int getNextSeries(String model) {
-        return serialNumbers.merge(model, Math.abs(model.hashCode() % 1000) * 1_000_000, (ov, nv) -> ov + 1);
+        AnnotationConfigApplicationContext context = MainApp.getContext();
+        CarService carService = context.getBean(CarService.class);
+        return carService.getNextCarModelSeries(model);
     }
 }
