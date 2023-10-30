@@ -36,11 +36,11 @@ public class MainApp {
         }
 
 //  Пользователь без авто
-        User user5 = new User("User5", "Lastname5", "user5@mail.ru", null);
-        originalUsers.add(user5);
-        userService.add(user5);
+//        User user5 = new User("User5", "Lastname5", "user5@mail.ru", null);
+//        originalUsers.add(user5);
+//        userService.add(user5);
 
-//  Еще пользователь с авто
+//  Еще один пользователь с авто
         User userX = context.getBean("userX", User.class);
         Car carX = new Car("Model X", 1);
         userX.setCar(carX);
@@ -48,14 +48,14 @@ public class MainApp {
 
 //  Получение всех пользователей из БД
         List<User> users = userService.listUsers();
-        System.out.println();
+        System.out.println("Все пользователи в БД:");
         for (User user : users) {
             System.out.println(user);
         }
 
-// Получение юзера, по модели и серии машины
+// Получение юзера по модели и серии машины
         User user = userService.getUserByModelAndSeries(carX.getModel(), carX.getSeries());
-        System.out.println();
+        System.out.println("Получение юзера по модели и серии машины:");
         System.out.println(user);
 
 // Получение владельца несуществующей машины
@@ -64,25 +64,27 @@ public class MainApp {
 //        System.out.println(user6);
 
 // Получение юзера по id
-        User user8 = userService.getUser(users.get(users.size() - 1).getId());
-        System.out.println();
+        long id8 = users.get(users.size() - 1).getId();
+        User user8 = userService.getUser(id8);
+        System.out.println("Получение юзера по id:");
         System.out.println(user8);
 
 // update
-        long id8 = user8.getId();
-        String email8 = user.getEmail();
+        String email8 = user8.getEmail();
         user8.setEmail(email8.replaceFirst("gmail", "yahoo"));
         userService.update(user8);
 
+//  Поучение модифицированного юзера из БД
         User user9 = userService.getUser(id8);
-        System.out.println();
+        System.out.println("Поучение модифицированного юзера из БД:");
         System.out.println(user9);
 
 //  remove
-        System.out.println(userService.remove(id8));
+        System.out.println("Удаление из БД: " + userService.remove(id8));
 //  remove again
-//        System.out.println(userService.remove(id8));
+//        System.out.println("Удаление из БД: " + userService.remove(id8));
 //  remove again
+//        System.out.println("Удаление из БД");
 //        userService.remove(user8);
 
 //        User user10 = userService.getUser(987654321);

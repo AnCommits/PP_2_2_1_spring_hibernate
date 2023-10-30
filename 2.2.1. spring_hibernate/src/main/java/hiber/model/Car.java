@@ -25,7 +25,8 @@ public class Car {
     @OneToOne(mappedBy = "car")
     private User owner;
 
-    public Car() {}
+    public Car() {
+    }
 
     public Car(String model, int series) {
         this.model = model;
@@ -56,7 +57,7 @@ public class Car {
         owner = user;
     }
 
-    public static Map<String, Integer> getSerialNumbers() {
-        return serialNumbers;
+    public static int getNextSeries(String model) {
+        return serialNumbers.merge(model, Math.abs(model.hashCode() % 1000) * 1_000_000, (ov, nv) -> ov + 1);
     }
 }

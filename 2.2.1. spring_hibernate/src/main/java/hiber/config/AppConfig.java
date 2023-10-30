@@ -86,10 +86,8 @@ public class AppConfig {
     @Bean("randomCar")
     @Scope("prototype")
     public Car getRandomCar() {
-        Map<String, Integer> serialNumbers = Car.getSerialNumbers();
         CarModel[] carModels = CarModel.values();
         String carModel = carModels[random.nextInt(carModels.length)].getModel();
-        serialNumbers.merge(carModel, 1_000_000, (ov, nv) -> ov + 1);
-        return new Car(carModel, serialNumbers.get(carModel));
+        return new Car(carModel, Car.getNextSeries(carModel));
     }
 }
