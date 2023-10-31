@@ -1,4 +1,4 @@
-package hiber.model;
+package hiber.constant;
 
 public enum CarModels {
     ALFA_24HP("ALFA 24hp"),

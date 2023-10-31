@@ -1,6 +1,5 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +28,15 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public User getUserByModelAndSeries(String model, int series) {
+    public User getUserByModelSeries(String model, int series) {
+        String hql = "from User where car = (from Car where model = :model and series = :series)";
+        TypedQuery<User> typedQuery = sessionFactory.getCurrentSession().createQuery(hql);
+        typedQuery.setParameter("model", model);
+        typedQuery.setParameter("series", series);
         User user = null;
         try {
-            String HQL = "from Car where model = :model and series = :series";
-            TypedQuery<Car> query = sessionFactory.getCurrentSession().createQuery(HQL);
-            query.setParameter("model", model);
-            query.setParameter("series", series);
-            // В таблице могут оказаться автомобили, эквивалентные по model и series.
-            // Был случай, когда сетевые карты из одной партии из Китая имели одинаковый MAC-адрес.
-            user = query.getResultList().get(0).getUser();
-        } catch (RuntimeException e) {
+            user = typedQuery.getSingleResult();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return user;
@@ -47,7 +44,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public User getUser(long id) {
+    public User getUserById(long id) {
         User user = null;
         try {
             String HQL = "from User where id = :id";
@@ -65,7 +62,7 @@ public class UserDaoImp implements UserDao {
         try {
             // никакие исключения почему-то не перехватываются при отсутствии юзера в БД,
             // в getUser исключение перехватывается при отсутствии id в БД
-            User user2 = getUser(user.getId());
+            User user2 = getUserById(user.getId());
             sessionFactory.getCurrentSession().remove(user2);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -80,7 +77,7 @@ public class UserDaoImp implements UserDao {
     @Override
     public boolean remove(long id) {
         try {
-            sessionFactory.getCurrentSession().remove(getUser(id));
+            sessionFactory.getCurrentSession().remove(getUserById(id));
             return true;
         } catch (RuntimeException e) {
             e.printStackTrace();

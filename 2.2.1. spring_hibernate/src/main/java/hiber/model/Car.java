@@ -1,11 +1,13 @@
 package hiber.model;
 
 import hiber.MainApp;
+import hiber.constant.CarModels;
 import hiber.service.CarService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Entity
 @Table(name = "cars")
@@ -13,7 +15,7 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @NonNull
     private String model;
@@ -63,6 +65,12 @@ public class Car {
     public static int getNextSeries(String model) {
         AnnotationConfigApplicationContext context = MainApp.getContext();
         CarService carService = context.getBean(CarService.class);
-        return carService.getNextCarModelSeries(model);
+        return carService.getNextSeriesByModel(model);
+    }
+
+    public static Car getRandomCar() {
+        CarModels[] carModels = CarModels.values();
+        Random random = new Random();
+        return new Car(carModels[random.nextInt(carModels.length)].getModel());
     }
 }

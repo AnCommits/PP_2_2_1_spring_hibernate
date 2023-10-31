@@ -9,9 +9,9 @@ public interface UserDao {
 
     List<User> listUsers();
 
-    User getUserByModelAndSeries(String model, int series);
+    User getUserByModelSeries(String model, int series);
 
-    User getUser(long id);
+    User getUserById(long id);
 
     void remove(User user);
 
