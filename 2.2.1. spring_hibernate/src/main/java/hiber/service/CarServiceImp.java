@@ -7,15 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CarServiceImp implements CarService {
 
-    private CarDao carDao;
+    private final CarDao carDao;
+
+    public CarServiceImp(CarDao carDao) {
+        this.carDao = carDao;
+    }
 
     @Transactional(readOnly = true)
     @Override
     public int getNextSeriesByModel(String model) {
         return carDao.getNextSeriesByModel(model);
-    }
-
-    public CarServiceImp(CarDao carDao) {
-        this.carDao = carDao;
     }
 }
